@@ -9,18 +9,17 @@ import java.util.Scanner;
  * @author M. L. Liu
  */
 public class EchoClient1 {
-    static final String endMessage = ".";
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         try {
             String hostName = "localhost";
-            String portNum = "9601";
+            String portNum = "3001";
 
             System.out.println("Login.\nEnter username: ");
-            String username = input.nextLine().trim();
+            String username = "john";//input.nextLine().trim();
 
             System.out.println("What is your password: ");
-            String password = input.nextLine().trim();
+            String password = "pass";//input.nextLine().trim();
 
             EchoClientHelper1 helper = new EchoClientHelper1(hostName, portNum);
 
@@ -30,7 +29,9 @@ public class EchoClient1 {
             echo = helper.getEcho("100:username:" + username + ":password:" + password);
 
             helper.done();
+            String hash = echo.substring(4, echo.length());
             System.out.println(echo);
+            System.out.println(hash);
 
 
         } // end try

@@ -1,6 +1,9 @@
 /**
  * Created by t00126681 on 25/10/2016.
  */
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 /**
@@ -23,12 +26,12 @@ public class Client {
             ClientHelper helper = new ClientHelper(hostName, portNum);
 
             String echo;
-            echo = helper.getEcho("100:username:" + username + ":password:" + password);
-
-            helper.done();
-            String hash = echo.substring(4, echo.length());
+            echo = helper.getEcho("400" + username + password);
             System.out.println(echo);
-            System.out.println(hash);
+
+            //helper.sendFile("data/hello.txt");
+            helper.done();
+
 
 
         } // end try
@@ -36,4 +39,12 @@ public class Client {
             ex.printStackTrace( );
         } // end catch
     } //end main
+    /*public static byte[] getFileAsBytes(String stringPath) {
+        Path path = Paths.get(stringPath);
+        try {
+            byte[] data = Files.readAllBytes(path);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }*/
 } // end class

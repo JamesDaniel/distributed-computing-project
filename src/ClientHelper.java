@@ -3,6 +3,9 @@
  */
 import java.net.*;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * This class is a module which provides the application logic
@@ -27,10 +30,26 @@ public class ClientHelper {
             throws SocketException, IOException {
         String echo = "";
         mySocket.sendMessage( serverHost, serverPort, message);
+        System.out.println("message sent");
         // now receive the echo
         echo = mySocket.receiveMessage();
+        System.out.println("message recieved");
         return echo;
     } //end getEcho
+    public void sendFile(String stringPath) throws IOException {
+        String protocol = "200";
+        byte[] data = FileSystemUtils.getBytesFromPath(stringPath);
+        int length = data.length;
+        String name = FileSystemUtils.getFileNameFromPath(stringPath);
+
+        if (length > 83) {
+            System.out.println("File is too large. Exiting.");
+            return;
+        }
+        byte[] bytesForPacket = PackageFilePacket.packagedPacket("200", length, name, data);
+
+        mySocket.sendFile(serverHost, serverPort, bytesForPacket);
+    }
 
     public void done( ) throws SocketException {
         mySocket.close( );

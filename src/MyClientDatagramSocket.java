@@ -33,6 +33,12 @@ public class MyClientDatagramSocket extends DatagramSocket {
         DatagramPacket datagram = new DatagramPacket(file, file.length, receiverHost, receiverPort);
         this.send(datagram);
     }
+    public byte[] getFile() throws IOException {
+        byte[] receiveBuffer = new byte[MAX_LEN];
+        DatagramPacket datagram = new DatagramPacket(receiveBuffer, MAX_LEN);
+        this.receive(datagram);
+        return receiveBuffer;
+    }
 
     public String receiveMessage()
             throws IOException {

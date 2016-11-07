@@ -28,7 +28,7 @@ public class Client {
             //String echo;
             //echo = helper.getEcho("100" + username + password);
             //System.out.println(echo);
-            helper.getFile("hello.txt");
+            helper.getFile("test.txt");
             //helper.sendFile("data/hello.txt");
             helper.done();
 

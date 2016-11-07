@@ -50,7 +50,7 @@ public class ClientHelper {
 
         mySocket.sendFile(serverHost, serverPort, bytesForPacket);
     }
-    public void getFile(String fileName, MyClientDatagramSocket socket) throws IOException {
+    public void getFile(String fileName) throws IOException {
         String protocol = "300";
 
         if (fileName.length() > 10) {
@@ -61,13 +61,21 @@ public class ClientHelper {
             }
         }
 
-        byte[] bytesForPacket = PackageFilePacket.packagedPacket("200", -1, fileName, " ".getBytes());
+        byte[] bytesForPacket = PackageFilePacket.packagedPacket("300", -1, fileName, " ".getBytes());
 
-        byte[] receivedData = socket.getFile();
+        mySocket.sendFile(serverHost, serverPort, bytesForPacket);
+        System.out.println("got here");
+        byte[] receivedData = mySocket.getFile();
 
         byte[] fileData = receivedData;
         createFileFromNameAndBytes(fileName,fileData);
         System.out.println("download request finished.");
+    }
+    public void createFileFromNameAndBytes(String name, byte[] bytes) throws IOException {
+        byte[] fileContent = ReadFilePacket.getFileContent(bytes);
+        new File("Downloads").mkdir();
+        Path path = Paths.get("Downloads/" + name.trim());
+        Files.write(path,fileContent);
     }
 
     public void done( ) throws SocketException {

@@ -34,6 +34,7 @@ public class MyClientDatagramSocket extends DatagramSocket {
         this.send(datagram);
     }
     public byte[] getFile() throws IOException {
+
         byte[] receiveBuffer = new byte[MAX_LEN];
         DatagramPacket datagram = new DatagramPacket(receiveBuffer, MAX_LEN);
         this.receive(datagram);

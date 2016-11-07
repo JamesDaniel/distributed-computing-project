@@ -1,14 +1,13 @@
 /**
  * Created by t00126681 on 25/10/2016.
  */
-import java.io.*;
 import java.util.Scanner;
 
 /**
  * This module contains the presentaton logic of an Echo Client.
  * @author M. L. Liu
  */
-public class EchoClient1 {
+public class Client {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         try {
@@ -21,9 +20,7 @@ public class EchoClient1 {
             System.out.println("What is your password: ");
             String password = "pass";//input.nextLine().trim();
 
-            EchoClientHelper1 helper = new EchoClientHelper1(hostName, portNum);
-
-
+            ClientHelper helper = new ClientHelper(hostName, portNum);
 
             String echo;
             echo = helper.getEcho("100:username:" + username + ":password:" + password);

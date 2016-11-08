@@ -1,6 +1,7 @@
 /**
  * Created by t00126681 on 25/10/2016.
  */
+import javax.swing.*;
 import java.net.*;
 import java.io.*;
 import java.nio.file.Files;
@@ -36,26 +37,32 @@ public class ClientHelper {
         System.out.println("message recieved");
         return echo;
     } //end getEcho
-    public void sendFile(String stringPath) throws IOException {
+    public String sendFile(String stringPath) throws IOException {
         String protocol = "200";
         byte[] data = FileSystemUtils.getBytesFromPath(stringPath);
         int length = data.length;
         String name = FileSystemUtils.getFileNameFromPath(stringPath);
 
+        if (name.length() > 10) {
+            JOptionPane.showMessageDialog(null, "File name too large. Name cannot be greater than 10 characters in length including the extension.");
+            return "";
+        }
         if (length > 83) {
-            System.out.println("File is too large. Exiting.");
-            return;
+            JOptionPane.showMessageDialog(null, "File size too large to upload. Must by 83 bytes or less.");
+            return "";
         }
         byte[] bytesForPacket = PackageFilePacket.packagedPacket("200", length, name, data);
 
-        mySocket.sendFile(serverHost, serverPort, bytesForPacket);
+        return mySocket.sendFile(serverHost, serverPort, bytesForPacket);
     }
     public void getFile(String fileName) throws IOException {
         String protocol = "300";
 
         if (fileName.length() > 10) {
-            fileName = fileName.substring(0,10);
-        } else {
+            JOptionPane.showMessageDialog(null, "File name too long. Files on the server are only 10 characters including the file extension.");
+            return;
+        }
+        if (fileName.length() < 10) {
             while (fileName.length()<10) {
                 fileName = fileName + " ";
             }
@@ -63,13 +70,26 @@ public class ClientHelper {
 
         byte[] bytesForPacket = PackageFilePacket.packagedPacket("300", -1, fileName, " ".getBytes());
 
-        mySocket.sendFile(serverHost, serverPort, bytesForPacket);
-        System.out.println("got here");
+        String response = mySocket.sendFile(serverHost, serverPort, bytesForPacket);
+        if (response.equals("600")) {
+            JOptionPane.showMessageDialog(null, "Server rejected request for file. Error 600");
+            return;
+        }
+
         byte[] receivedData = mySocket.getFile();
 
         byte[] fileData = receivedData;
-        createFileFromNameAndBytes(fileName,fileData);
-        System.out.println("download request finished.");
+        String receiveProtocol = ReadFilePacket.getProtocol(fileData);
+        if (receiveProtocol.equals("600")) {
+            JOptionPane.showMessageDialog(null, "Error Downloading file. Error 600");
+            return;
+        } else if (receiveProtocol.equals("500")) {
+            createFileFromNameAndBytes(fileName,fileData);
+            JOptionPane.showMessageDialog(null, "Download succeeded.");
+        } else {
+            JOptionPane.showMessageDialog(null, "An unknown error occurred.");
+        }
+
     }
     public void createFileFromNameAndBytes(String name, byte[] bytes) throws IOException {
         byte[] fileContent = ReadFilePacket.getFileContent(bytes);

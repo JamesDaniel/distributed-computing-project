@@ -14,7 +14,6 @@ public class FileSystemUtils {
     public static String getFileNameFromPath(String filePath) {
         Path path = Paths.get(filePath);
         String name = path.getFileName().toString();
-        System.out.println("file&ext: " + name);
         return name;
     }
 }

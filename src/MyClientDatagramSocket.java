@@ -27,14 +27,16 @@ public class MyClientDatagramSocket extends DatagramSocket {
                         receiverHost, receiverPort);
         this.send(datagram);
     } // end sendMessage
-    public void sendFile(InetAddress receiverHost,
+    public String sendFile(InetAddress receiverHost,
                          int receiverPort,
                          byte[] file) throws IOException {
         DatagramPacket datagram = new DatagramPacket(file, file.length, receiverHost, receiverPort);
+        System.out.println("message sent");
         this.send(datagram);
+        System.out.println("message received");
+        return receiveMessage();
     }
     public byte[] getFile() throws IOException {
-
         byte[] receiveBuffer = new byte[MAX_LEN];
         DatagramPacket datagram = new DatagramPacket(receiveBuffer, MAX_LEN);
         this.receive(datagram);

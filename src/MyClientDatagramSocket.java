@@ -35,7 +35,8 @@ public class MyClientDatagramSocket extends DatagramSocket {
         System.out.println("message sent");
         this.send(datagram);
         System.out.println("message received");
-        return receiveMessage();
+        String receiveMessage = new String(receiveMessage());
+        return receiveMessage;
     }
     public byte[] getFile() throws IOException {
         byte[] receiveBuffer = new byte[MAX_LEN];
@@ -44,13 +45,12 @@ public class MyClientDatagramSocket extends DatagramSocket {
         return receiveBuffer;
     }
 
-    public String receiveMessage()
+    public byte[] receiveMessage()
             throws IOException {
         byte[ ] receiveBuffer = new byte[MAX_LEN];
         DatagramPacket datagram =
                 new DatagramPacket(receiveBuffer, MAX_LEN);
         this.receive(datagram);
-        String message = new String(receiveBuffer);
-        return message;
+        return receiveBuffer;
     } //end receiveMessage
 } //end class

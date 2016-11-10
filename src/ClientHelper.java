@@ -33,7 +33,7 @@ public class ClientHelper {
         mySocket.sendMessage( serverHost, serverPort, message);
         System.out.println("message sent");
         // now receive the echo
-        echo = mySocket.receiveMessage();
+        echo = new String(mySocket.receiveMessage());
         System.out.println("message recieved");
         return echo;
     } //end getEcho
@@ -71,14 +71,8 @@ public class ClientHelper {
         byte[] bytesForPacket = PackageFilePacket.packagedPacket("300", -1, fileName, " ".getBytes());
 
         String response = mySocket.sendFile(serverHost, serverPort, bytesForPacket);
-        if (response.trim().equals("600")) {
-            JOptionPane.showMessageDialog(null, "Server rejected request for file. Error 600");
-            return;
-        }
-        byte[] receivedData = mySocket.getFile();
 
-
-        byte[] fileData = receivedData;
+        byte[] fileData = response.getBytes();
         String receiveProtocol = ReadFilePacket.getProtocol(fileData).trim();
         if (receiveProtocol.equals("600")) {
             JOptionPane.showMessageDialog(null, "Error Downloading file. Error 600");

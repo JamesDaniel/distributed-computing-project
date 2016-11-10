@@ -50,18 +50,28 @@ public class Client extends JFrame {
         try {
             ClientHelper helper = new ClientHelper(hostname, port);
             String echo;
+            if (!isLength4(username.getText()) || !isLength4(password.getText())){
+                JOptionPane.showMessageDialog(null,"Invalid username or password. Each must be 4 characters in length.");
+                return;
+            }
             echo = helper.getEcho("100" + username.getText() + password.getText());
             if (echo.substring(0,3).equals("500")) {
                 JOptionPane.showMessageDialog(null,"Login Successful");
             } else if (echo.substring(0,3).equals("600")) {
                 JOptionPane.showMessageDialog(null,"Invalid username password combination");
             } else {
-                JOptionPane.showMessageDialog(null,"An unknown Error occurred");
+                JOptionPane.showMessageDialog(null,"An unknown Error occurred. " + echo);
             }
             helper.done();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    private boolean isLength4(String text) {
+        if (text.length() == 4) {
+            return true;
+        }
+        return false;
     }
     private void logout() {
         try {
@@ -96,7 +106,7 @@ public class Client extends JFrame {
             } else if (response.equals("600")) {
                 JOptionPane.showMessageDialog(null, "File upload failed");
             } else {
-                JOptionPane.showMessageDialog(null, "An unknown error occurred");
+                JOptionPane.showMessageDialog(null, "An unknown error occurred. Error " + response.trim());
             }
 
             helper.done();

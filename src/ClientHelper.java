@@ -71,19 +71,19 @@ public class ClientHelper {
         byte[] bytesForPacket = PackageFilePacket.packagedPacket("300", -1, fileName, " ".getBytes());
 
         String response = mySocket.sendFile(serverHost, serverPort, bytesForPacket);
-        if (response.equals("600")) {
+        if (response.trim().equals("600")) {
             JOptionPane.showMessageDialog(null, "Server rejected request for file. Error 600");
             return;
         }
-
         byte[] receivedData = mySocket.getFile();
 
+
         byte[] fileData = receivedData;
-        String receiveProtocol = ReadFilePacket.getProtocol(fileData);
+        String receiveProtocol = ReadFilePacket.getProtocol(fileData).trim();
         if (receiveProtocol.equals("600")) {
             JOptionPane.showMessageDialog(null, "Error Downloading file. Error 600");
             return;
-        } else if (receiveProtocol.equals("500")) {
+        } else if (receiveProtocol.equals("200")) {
             createFileFromNameAndBytes(fileName,fileData);
             JOptionPane.showMessageDialog(null, "Download succeeded.");
         } else {

@@ -12,6 +12,10 @@ import java.nio.file.Paths;
  * This class is a module which provides the application logic
  * for an Echo client using connectionless datagram socket.
  * @author M. L. Liu
+ *
+ * Reference:
+ * Even though this code is included in my project, this code is not written by myself JamesMcGarr.
+ * The author of this code is M. L. Liu
  */
 public class ClientHelper {
     private MyClientDatagramSocket mySocket;
@@ -26,7 +30,6 @@ public class ClientHelper {
         // and receiving data
         this.mySocket = new MyClientDatagramSocket();
     }
-
     public String getEcho( String message)
             throws SocketException, IOException {
         String echo = "";
@@ -91,7 +94,6 @@ public class ClientHelper {
         Path path = Paths.get("Downloads/" + name.trim());
         Files.write(path,fileContent);
     }
-
     public void done( ) throws SocketException {
         mySocket.close( );
     }  //end done

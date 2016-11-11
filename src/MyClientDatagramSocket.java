@@ -9,6 +9,10 @@ import java.io.*;
  * A subclass of DatagramSocket which contains
  * methods for sending and receiving messages
  * @author M. L. Liu
+ *
+ * Reference:
+ * Even though this code is included in my project, this code is not written by myself JamesMcGarr.
+ * The author of this code is M. L. Liu
  */
 public class MyClientDatagramSocket extends DatagramSocket {
     static final int MAX_LEN = 100;
